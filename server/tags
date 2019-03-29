@@ -1,0 +1,32 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Admin	Credential.java	/^	private boolean Admin;$/;"	f	class:Credential	file:
+Credential	Credential.java	/^	public Credential(boolean isAdmin,String userName){$/;"	m	class:Credential
+Credential	Credential.java	/^public class Credential{$/;"	c
+FileServer	FileServer.java	/^	public FileServer(int port) {$/;"	m	class:FileServer
+FileServer	FileServer.java	/^public class FileServer extends Thread {$/;"	c
+addUser	FileServer.java	/^	private void addUser(String userName,boolean isAdmin){$/;"	m	class:FileServer	file:
+allCred	FileServer.java	/^	private ArrayList<Credential> allCred = new ArrayList<Credential>();$/;"	f	class:FileServer	file:
+getAdmin	Credential.java	/^	public boolean getAdmin(){$/;"	m	class:Credential
+getName	Credential.java	/^	public String getName(){$/;"	m	class:Credential
+getToken	Credential.java	/^	public int getToken(){$/;"	m	class:Credential
+handleConnection	FileServer.java	/^	private void handleConnection(Socket s) throws IOException$/;"	m	class:FileServer	file:
+handleExist	FileServer.java	/^	private int handleExist(String S){$/;"	m	class:FileServer	file:
+main	FileServer.java	/^	public static void main(String[] args) {$/;"	m	class:FileServer
+main	testing.java	/^	public static void main(String[] args)throws UnsupportedEncodingException{$/;"	m	class:testing
+rand	Credential.java	/^	private Random rand = new Random();$/;"	f	class:Credential	file:
+rand	FileServer.java	/^	Random rand = new Random();$/;"	f	class:FileServer
+run	FileServer.java	/^	public void run() {$/;"	m	class:FileServer
+saveFile	FileServer.java	/^	private void saveFile(Socket clientSock) throws IOException {$/;"	m	class:FileServer	file:
+sendFile	FileServer.java	/^public void sendFile(String file,Socket s) throws IOException {$/;"	m	class:FileServer
+server	Credential.java	/^package server;$/;"	p
+server	FileServer.java	/^package server; $/;"	p
+ss	FileServer.java	/^	private ServerSocket ss;$/;"	f	class:FileServer	file:
+testing	testing.java	/^public class testing{$/;"	c
+token	Credential.java	/^	private int token;$/;"	f	class:Credential	file:
+tokens	FileServer.java	/^	private ArrayList<String> tokens = new ArrayList<String>();$/;"	f	class:FileServer	file:
+userName	Credential.java	/^	private String userName;$/;"	f	class:Credential	file:

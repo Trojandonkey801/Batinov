@@ -20,12 +20,11 @@ public class FileClient {
 	int port;
 	String host;
 	
-	public FileClient(String host, int port, String file) {
+	public FileClient(String host, int port) {
 		try {
 			this.port = port;
 			this.host = host;
 			s = new Socket(host, port);
-			sendMessage();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
@@ -80,7 +79,7 @@ public class FileClient {
 		return value;
 	}
 
-	private void sendMessage()throws IOException,InterruptedException{
+	private void sendMessage(String token)throws IOException,InterruptedException{
 		PrintWriter p = new PrintWriter(s.getOutputStream());
 		p.println("batinov");
 		p.flush();
@@ -89,14 +88,16 @@ public class FileClient {
 		if(value.equals("found")){
 			System.out.println(value);
 			Thread.sleep(5000);
-			sendFile("cat.jpg");
+			sendFile("testfile.jpg");
 			s.close();
 		}
 		sss.close();
 	}
 	
-	public static void main(String[] args) {
-		FileClient fc = new FileClient("localhost", 1988, "cat.jpg");
+	public static void main(String[] args) throws IOException, InterruptedException {
+		FileClient fc = new FileClient("localhost", 1988);
+		String token = fc.getToken();
+		fc.sendMessage(token);
 	}
 
 }
