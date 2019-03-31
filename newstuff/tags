@@ -5,53 +5,62 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 Admin	Credential.java	/^	private boolean Admin;$/;"	f	class:Credential	file:
-Credential	Credential.java	/^	public Credential(boolean isAdmin,String userName){$/;"	m	class:Credential
+Admin	UI.java	/^	private static boolean Admin = false;$/;"	f	class:UI	file:
+Administrator	Administrator.java	/^	public Administrator(Socket S,String userName){$/;"	m	class:Administrator
+Administrator	Administrator.java	/^public class Administrator extends user{$/;"	c
+Admins	EchoServer.java	/^	static ArrayList<Credential> Admins = new ArrayList<Credential>();$/;"	f	class:EchoServer
+Credential	Credential.java	/^	public Credential(boolean isAdmin,String userName,String password){$/;"	m	class:Credential
 Credential	Credential.java	/^public class Credential{$/;"	c
-Student	Student.java	/^	public Student(int port,String host, String userName){$/;"	m	class:Student
+Creds	EchoServer.java	/^	static ArrayList<Credential> Creds = new ArrayList<Credential>();$/;"	f	class:EchoServer
+EchoClient	EchoClient.java	/^public class EchoClient {$/;"	c
+EchoServer	EchoServer.java	/^	public EchoServer(Socket indivSocket)throws IOException{$/;"	m	class:EchoServer
+EchoServer	EchoServer.java	/^public class EchoServer implements Runnable{$/;"	c
+Files	EchoServer.java	/^	static ArrayList<String> Files = new ArrayList<String>();$/;"	f	class:EchoServer
+Student	Student.java	/^	public Student(Socket S,String userName)throws IOException{$/;"	m	class:Student
 Student	Student.java	/^public class Student extends user{$/;"	c
-addUser	newserver.java	/^	private void addUser(String userName,boolean isAdmin){$/;"	m	class:newserver	file:
-allCred	newserver.java	/^	private ArrayList<Credential> allCred = new ArrayList<Credential>();$/;"	f	class:newserver	file:
-allCred	server.java	/^	private ArrayList<Credential> allCred = new ArrayList<Credential>();$/;"	f	class:server	file:
-answerForum	user.java	/^	abstract void answerForum();$/;"	m	class:user
-client	client.java	/^	public client(int port,String host,String userName){$/;"	m	class:client
-client	client.java	/^public class client{$/;"	c
-close	client.java	/^	public void close()throws IOException{$/;"	m	class:client
-count	newserver.java	/^	private static int count = 0;$/;"	f	class:newserver	file:
-csocket	newserver.java	/^	Socket csocket;$/;"	f	class:newserver
+UI	UI.java	/^public class UI{$/;"	c
+Users	EchoServer.java	/^	static ArrayList<String> Users = new ArrayList<String>();$/;"	f	class:EchoServer
+UsersAdmin	EchoServer.java	/^	static ArrayList<String> UsersAdmin = new ArrayList<String>();$/;"	f	class:EchoServer
+actionHandler	UI.java	/^	public static boolean actionHandler(String S)throws IOException,InterruptedException{$/;"	m	class:UI
+addUser	Administrator.java	/^	public void addUser(String User, String Password,String isAdmin)throws IOException{$/;"	m	class:Administrator
+close	user.java	/^	public void close()throws IOException{$/;"	m	class:user
+deleteFile	EchoServer.java	/^	private void deleteFile(String topic,String fileName){$/;"	m	class:EchoServer	file:
+dir	EchoServer.java	/^	final static String dir = ".\/ServerFileDir\/";$/;"	f	class:EchoServer
+dir	user.java	/^	final String dir = ".\/ClientFileDir\/";$/;"	f	class:user
+dos	user.java	/^	DataOutputStream dos;$/;"	f	class:user
+equals	Credential.java	/^	public boolean equals(Credential C){$/;"	m	class:Credential
 getAdmin	Credential.java	/^	public boolean getAdmin(){$/;"	m	class:Credential
-getFile	user.java	/^	abstract void getFile();$/;"	m	class:user
-getForum	user.java	/^	abstract void getForum();$/;"	m	class:user
+getFile	user.java	/^	public void getFile(String fileName) throws IOException,InterruptedException{$/;"	m	class:user
+getFileList	user.java	/^	public void getFileList()throws IOException{$/;"	m	class:user
 getName	Credential.java	/^	public String getName(){$/;"	m	class:Credential
+getPassword	Credential.java	/^	public int getPassword(){$/;"	m	class:Credential
+getSocket	user.java	/^	public Socket getSocket(){$/;"	m	class:user
 getToken	Credential.java	/^	public int getToken(){$/;"	m	class:Credential
-getToken	client.java	/^	public String getToken()throws IOException{$/;"	m	class:client
-handleConnection	newserver.java	/^	private void handleConnection(Socket s) throws IOException$/;"	m	class:newserver	file:
-handleConnection	server.java	/^	private void handleConnection(Socket s) throws IOException$/;"	m	class:server	file:
-handleExist	newserver.java	/^	private int handleExist(String S){$/;"	m	class:newserver	file:
-main	client.java	/^	public static void main(String[] args)throws IOException ,InterruptedException{$/;"	m	class:client
-main	newserver.java	/^	public static void main(String args[]) throws Exception {$/;"	m	class:newserver
-main	server.java	/^	public static void main(String args[]) throws Exception {$/;"	m	class:server
-map	newserver.java	/^	private static HashMap<Thread,Integer> map;$/;"	f	class:newserver	file:
-newserver	newserver.java	/^	public newserver(Socket csocket) {$/;"	m	class:newserver
-newserver	newserver.java	/^public class newserver implements Runnable {$/;"	c
+getToken	user.java	/^	public String getToken()throws IOException{$/;"	m	class:user
+indivSocket	EchoServer.java	/^	Socket indivSocket;$/;"	f	class:EchoServer
+initCon	user.java	/^	public void initCon(int port, String host){$/;"	m	class:user
+instance	UI.java	/^	private static user instance;$/;"	f	class:UI	file:
+login	user.java	/^	public String login(String User, String Password)throws IOException{$/;"	m	class:user
+loginHandler	UI.java	/^	public static boolean loginHandler(){$/;"	m	class:UI
+main	EchoClient.java	/^	public static void main(String[] args) throws IOException {$/;"	m	class:EchoClient
+main	EchoServer.java	/^	public static void main(String[] args) throws IOException {$/;"	m	class:EchoServer
+main	UI.java	/^	public static void main(String[] args)throws IOException,InterruptedException {$/;"	m	class:UI
+p	user.java	/^	PrintWriter p;$/;"	f	class:user
+password	Credential.java	/^	private int password;$/;"	f	class:Credential	file:
+port	EchoServer.java	/^	static int port = 21839;$/;"	f	class:EchoServer
 rand	Credential.java	/^	private Random rand = new Random();$/;"	f	class:Credential	file:
-rand	newserver.java	/^	Random rand = new Random();$/;"	f	class:newserver
-run	newserver.java	/^	public void run() {$/;"	m	class:newserver
-run	server.java	/^	public void run(){$/;"	m	class:server
-s	client.java	/^	private Socket s;$/;"	f	class:client	file:
-saveFile	client.java	/^	private void saveFile(Socket clientSock,int token) throws IOException {$/;"	m	class:client	file:
-saveFile	newserver.java	/^	private void saveFile(Socket clientSock) throws IOException {$/;"	m	class:newserver	file:
-saveFile	server.java	/^	private void saveFile(Socket clientSocket) throws IOException{$/;"	m	class:server	file:
-sendFile	client.java	/^	 public void sendFile(String file) throws IOException {$/;"	m	class:client
-sendFile	user.java	/^	abstract void sendFile();$/;"	m	class:user
-sendMessage	client.java	/^	private void sendMessage(String token)throws IOException,InterruptedException{$/;"	m	class:client	file:
-server	server.java	/^	public server(int port){$/;"	m	class:server
-server	server.java	/^public class server extends Thread{$/;"	c
-ss	server.java	/^	private ServerSocket ss;$/;"	f	class:server	file:
+readAdmins	EchoServer.java	/^	public static void readAdmins() throws FileNotFoundException{$/;"	m	class:EchoServer
+readFiles	EchoServer.java	/^	public static void readFiles() throws FileNotFoundException{$/;"	m	class:EchoServer
+readUsers	EchoServer.java	/^	public static void readUsers() throws FileNotFoundException{$/;"	m	class:EchoServer
+run	EchoServer.java	/^	public void run(){$/;"	m	class:EchoServer
+s	UI.java	/^	private static Scanner s = new Scanner(System.in);$/;"	f	class:UI	file:
+saveFile	EchoServer.java	/^	private void saveFile(Socket clientSock, int filesize,String fileName,String topic) throws IOException {$/;"	m	class:EchoServer	file:
+sendFile	EchoServer.java	/^	public void sendFile(String file) throws IOException {$/;"	m	class:EchoServer
+sendFile	user.java	/^	public void sendFile(String file,String topic) throws IOException {$/;"	m	class:user
+sendFileList	EchoServer.java	/^	private void sendFileList(PrintWriter out,BufferedReader in)throws IOException{$/;"	m	class:EchoServer	file:
+socket	user.java	/^	protected Socket socket;$/;"	f	class:user
 token	Credential.java	/^	private int token;$/;"	f	class:Credential	file:
-token	user.java	/^	private String token;$/;"	f	class:user	file:
-tokens	newserver.java	/^	private ArrayList<String> tokens = new ArrayList<String>();$/;"	f	class:newserver	file:
-tokens	server.java	/^	private ArrayList<String> tokens = new ArrayList<String>();$/;"	f	class:server	file:
-user	user.java	/^	public user(int port, String host, String userName)throws IOException{$/;"	m	class:user
-user	user.java	/^public abstract class user extends client{$/;"	c
+user	user.java	/^	public user(String userName){$/;"	m	class:user
+user	user.java	/^public class user{$/;"	c
 userName	Credential.java	/^	private String userName;$/;"	f	class:Credential	file:
-userName	client.java	/^	String userName;$/;"	f	class:client
+userName	user.java	/^	String userName;$/;"	f	class:user

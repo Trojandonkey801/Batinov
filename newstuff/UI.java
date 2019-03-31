@@ -2,26 +2,39 @@ import java.util.*;
 import java.io.*;
 public class UI{
 	private static user instance;
-	private static boolean Admin = false;;
+	private static boolean Admin = false;
 	private static Scanner s = new Scanner(System.in);
 	public static void main(String[] args)throws IOException,InterruptedException {
 		if(loginHandler()){
 			String S;
 			do{
 				if(Admin)
-					System.out.println("Send File | Receive File | Add User");
+					System.out.println("Send File | Receive File | Add User | Get File List | Delete File");
 				else
-					System.out.println("Send File | Receive File");
+					System.out.println("Send File | Receive File | Get File List");
 				S = s.nextLine();
 			}while(actionHandler(S));
 		}
 		s.close();
 	}
 	public static boolean actionHandler(String S)throws IOException,InterruptedException{
+		if(instance.getSocket() == null){
+			System.out.println(" in action sockets null");
+		}
 			if(S.equals("Send File")){
 				System.out.println("Enter File name");
 				String fileName = s.nextLine();
-				instance.sendFile(fileName);
+				System.out.println("Entire File topic");
+				String fileTopic = s.nextLine();
+				instance.sendFile(fileName,fileTopic);
+				return true;
+			}
+			else if(S.equals("Delete File")){
+				System.out.println("Enter File name");
+				String fileName = s.nextLine();
+				System.out.println("Entire File topic");
+				String fileTopic = s.nextLine();
+				((Administrator)instance).deleteFile(fileName,fileTopic);
 				return true;
 			}
 			else if(S.equals("Add User")){
@@ -40,35 +53,45 @@ public class UI{
 				instance.getFile(fileName);
 				return true;
 			}
+			else if(S.equals("Get File List")){
+				instance.getFileList();
+				return true;
+			}
 			return false;
 		}
+
 	public static boolean loginHandler(){
 		System.out.println("attempt login");
 		System.out.println("User userName");
 		String userName = s.nextLine();
 		System.out.println("Password");
 		String password = s.nextLine();
-		instance = new user(21839,"localhost",userName);
+		instance = new user(userName);
+		instance.initCon(21839,"localhost");
+		boolean toreturn = false;
 		try{
 			String loginsuccess = instance.login(userName,password);
 			if(loginsuccess.equals("Student")){
 				System.out.println("logged in as student");
-				instance = new Student(21839,"localhost",userName);
-				return true;
+				instance = new Student(instance.getSocket(),userName);
+				toreturn = true;
 			}
-			if(loginsuccess.equals("Admin")){
+			else if(loginsuccess.equals("Admin")){
 				Admin = true;
 				System.out.println("logged in as Admin");
-				instance = new Administrator(21839,"localhost",userName);
-				return true;
+				instance = new Administrator(instance.getSocket(),userName);
+				toreturn = true;
 			}
 			else{
 				System.out.println("log in failed. server will now close socket");
-				return false;
 			}
 		}catch(IOException e){
 			System.out.println(e.getMessage());
 		}
-		return false;
+		if(instance.getSocket() == null){
+			System.out.println("in login sockets null");
+		}
+		System.out.println("toreturn bool" + toreturn);
+		return toreturn;
 	}
 }

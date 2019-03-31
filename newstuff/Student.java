@@ -1,7 +1,8 @@
-//package batinov;
 import java.io.IOException;
+import java.net.*;
 public class Student extends user{
-	public Student(int port,String host, String userName)throws IOException{
-		super(port,host,userName);
+	public Student(Socket S,String userName)throws IOException{
+		super(userName);
+		this.socket = S;
 	}
 }
