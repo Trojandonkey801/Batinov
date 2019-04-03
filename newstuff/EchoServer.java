@@ -211,6 +211,7 @@ public class EchoServer implements Runnable{
 			while (inputLine != null && !exit) {
 				Scanner s = new Scanner(inputLine);
 				String first = s.next();
+				System.out.println(first);
 				if(!first.equals("login") && !logged){
 					System.out.println("broken because " + logged);
 					break;
@@ -220,25 +221,28 @@ public class EchoServer implements Runnable{
 					loggedName = name;
 					int userInd = Users.indexOf(name);
 					int adminInd = UsersAdmin.indexOf(name);
-					if(userInd != -1)
+					if(userInd != -1){
 						if(Creds.get(userInd).equals(new Credential(false,name,s.next()))){
 							System.out.println("Log in successful");
 							Thread.sleep(100);
 							out.println("Student");
 							logged = true;
 						}
-					if(adminInd != -1)
+					}
+					else if(adminInd != -1){
 						if(Admins.get(adminInd).equals(new Credential(true,name,s.next()))){
 							System.out.println("Log in successful");
 							Thread.sleep(100);
 							out.println("Admin");
 							logged = true;
 						}
-						else{
-							Thread.sleep(100);
-							out.println("failed");
-							break;
-						}
+					}
+					else{
+						System.out.println("failed login");
+						Thread.sleep(100);
+						out.println("failed");
+						break;
+					}
 				}
 				if(first.equals("file")){
 					String fileName = s.next();

@@ -80,11 +80,13 @@ public class user{
 		return socket;
 	}
 	public String login(String User, String Password)throws IOException{
+		System.out.println("read  " + User + " "+ Password);
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(socket.getInputStream()));
 		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
 		p.println("login " + User+ " " +Password);
 		String confirm = in.readLine();
+		System.out.println(confirm);
 		return confirm;
 	}
 	public void getFileList()throws IOException{
