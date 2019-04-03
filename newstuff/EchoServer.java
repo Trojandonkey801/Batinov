@@ -266,7 +266,7 @@ public class EchoServer implements Runnable{
 					if(!Users.contains(name)){
 						Users.add(name);
 						FileWriter f;
-						if(isAdmin.equals("true")){
+						if(isAdmin.equals("true") || isAdmin.equals("yes") || isAdmin.equals("y") || isAdmin.equals("t")){
 							Admins.add(new Credential(true,name,pw));
 							f = new FileWriter(new File(dir + "AdminList.txt"),true);
 						}
