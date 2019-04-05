@@ -19,8 +19,9 @@ public class Administrator extends user{
 	 */
 	public void deleteFile(String fileName,String topic)throws IOException{
 		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
-		p.println("delete" + fileName + topic);
+		p.println("delete " + fileName + " " + topic);
 	}
+	
 
 	/**
 	 * Call to add User, only for Administrator

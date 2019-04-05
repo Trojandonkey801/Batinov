@@ -102,9 +102,15 @@ public class EchoServer implements Runnable{
 	 *@param topic topic of file(subdirectory file)
 	 *@param fileName name of File
 	 */
-	private void deleteFile(String topic,String fileName){
+	private void deleteFile(String topic,String fileName)throws FileNotFoundException,IOException{
+		System.out.println("inside dlete");
 		File directory = new File(dir + topic + "/" + fileName);
+		System.out.println("del " + dir + topic + "/" + fileName + " aaaa");
 		directory.delete();
+		File fileList = new File(dir+"UserFiles.txt");
+		fileList.delete();
+		fileList.createNewFile();
+		readFiles();
 	}
 	/*
 	 *Send list of file names.
@@ -149,13 +155,12 @@ public class EchoServer implements Runnable{
 		}
 		System.out.println(toSend);
 		out.println(toSend);
-		out.println("\n");
 		out.println("exit FileList");
 	}
 	private void saveFile(Socket clientSock, int filesize,String fileName,String topic) throws IOException,InterruptedException {
 		DataInputStream dis = new DataInputStream(clientSock.getInputStream());
 		File dirPath = new File(dir+topic);
-		File F = new File(dir + topic + "/received" + fileName);
+		File F = new File(dir + topic + "/received_" + fileName);
 		if(!dirPath.exists()){
 			dirPath.mkdirs();
 		}
@@ -258,6 +263,11 @@ public class EchoServer implements Runnable{
 				if(first.equals("getFileList")){
 					sendFileList(out,in);
 				}
+				if(first.equals("delete")){
+					String fileName = s.next();
+					String topic = s.next();
+					deleteFile(topic,fileName);
+				}
 				if(first.equals("AddUser")){
 					String name = s.next();
 					String pw = s.next();
@@ -282,7 +292,7 @@ public class EchoServer implements Runnable{
 					}
 				}
 				inputLine = in.readLine();
-				System.out.println(inputLine);
+				System.out.println("inputLin" + inputLine);
 			}
 		} catch (InterruptedException ex){
 			System.out.println(ex.getMessage());

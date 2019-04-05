@@ -24,7 +24,8 @@ UsersAdmin	EchoServer.java	/^	static ArrayList<String> UsersAdmin = new ArrayLis
 actionHandler	UI.java	/^	public static boolean actionHandler(String S)throws IOException,InterruptedException{$/;"	m	class:UI
 addUser	Administrator.java	/^	public void addUser(String User, String Password,String isAdmin)throws IOException{$/;"	m	class:Administrator
 close	user.java	/^	public void close()throws IOException{$/;"	m	class:user
-deleteFile	EchoServer.java	/^	private void deleteFile(String topic,String fileName){$/;"	m	class:EchoServer	file:
+deleteFile	Administrator.java	/^	public void deleteFile(String fileName,String topic)throws IOException{$/;"	m	class:Administrator
+deleteFile	EchoServer.java	/^	private void deleteFile(String topic,String fileName)throws FileNotFoundException{$/;"	m	class:EchoServer	file:
 dir	EchoServer.java	/^	final static String dir = ".\/ServerFileDir\/";$/;"	f	class:EchoServer
 dir	user.java	/^	final String dir = ".\/ClientFileDir\/";$/;"	f	class:user
 dos	user.java	/^	DataOutputStream dos;$/;"	f	class:user
@@ -54,7 +55,7 @@ readFiles	EchoServer.java	/^	public static void readFiles() throws FileNotFoundE
 readUsers	EchoServer.java	/^	public static void readUsers() throws FileNotFoundException{$/;"	m	class:EchoServer
 run	EchoServer.java	/^	public void run(){$/;"	m	class:EchoServer
 s	UI.java	/^	private static Scanner s = new Scanner(System.in);$/;"	f	class:UI	file:
-saveFile	EchoServer.java	/^	private void saveFile(Socket clientSock, int filesize,String fileName,String topic) throws IOException {$/;"	m	class:EchoServer	file:
+saveFile	EchoServer.java	/^	private void saveFile(Socket clientSock, int filesize,String fileName,String topic) throws IOException,InterruptedException {$/;"	m	class:EchoServer	file:
 sendFile	EchoServer.java	/^	public void sendFile(String file) throws IOException {$/;"	m	class:EchoServer
 sendFile	user.java	/^	public void sendFile(String file,String topic) throws IOException {$/;"	m	class:user
 sendFileList	EchoServer.java	/^	private void sendFileList(PrintWriter out,BufferedReader in)throws IOException{$/;"	m	class:EchoServer	file:
