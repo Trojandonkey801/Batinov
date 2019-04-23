@@ -79,6 +79,11 @@ public class user{
 	public Socket getSocket(){
 		return socket;
 	}
+	public void clearNotif() throws IOException{
+		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
+		p.println("clearNotification " + userName);
+		p.close();
+	}
 	public String login(String User, String Password)throws IOException{
 		System.out.println("read  " + User + " "+ Password);
 		BufferedReader in = new BufferedReader(
@@ -89,6 +94,15 @@ public class user{
 		System.out.println(confirm);
 		return confirm;
 	}
+
+	public void convertFile(String fileName,String topic, String format)throws IOException{
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(socket.getInputStream()));
+		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
+		p.println("convertFile " + fileName + " " + topic +  " " + format);
+		in.close();
+	}
+
 	public void getFileList()throws IOException{
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(socket.getInputStream()));
@@ -97,7 +111,8 @@ public class user{
 		String confirm = "";
 		do{
 			confirm = in.readLine();
-			System.out.println(confirm);
+			if(!confirm.equals("exit FileList"))
+				System.out.println(confirm);
 		}
 		while(!confirm.equals("exit FileList"));
 	}

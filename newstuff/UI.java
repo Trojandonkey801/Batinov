@@ -7,13 +7,16 @@ public class UI{
 	public static void main(String[] args)throws IOException,InterruptedException {
 		if(loginHandler()){
 			String S;
-			do{
+			while(true){
 				if(Admin)
-					System.out.println("Send File | Receive File | Add User | Get File List | Delete File");
+					System.out.println("Convert File | Clear Notification | Send File | Receive File | Add User | Get File List | Delete File | Exit");
 				else
-					System.out.println("Send File | Receive File | Get File List");
+					System.out.println("Convert File | Clear Notification | Send File | Receive File | Get File List | Exit");
 				S = s.nextLine();
-			}while(actionHandler(S));
+				if(S.equals("Exit"))
+					break;
+				actionHandler(S);
+			}
 		}
 		s.close();
 	}
@@ -21,44 +24,58 @@ public class UI{
 		if(instance.getSocket() == null){
 			System.out.println(" in action sockets null");
 		}
-			if(S.equals("Send File")){
-				System.out.println("Enter File name");
-				String fileName = s.nextLine();
-				System.out.println("Entire File topic");
-				String fileTopic = s.nextLine();
-				instance.sendFile(fileName,fileTopic);
-				return true;
-			}
-			else if(S.equals("Delete File")){
-				System.out.println("Enter File name");
-				String fileName = s.nextLine();
-				System.out.println("Entire File topic");
-				String fileTopic = s.nextLine();
-				((Administrator)instance).deleteFile(fileName,fileTopic);
-				return true;
-			}
-			else if(S.equals("Add User")){
-				System.out.println("Enter User name");
-				String userName = s.nextLine();
-				System.out.println("Enter User password");
-				String userPassword = s.nextLine();
-				System.out.println("Is this person an admin");
-				String isAdmin = s.nextLine();
-				((Administrator)instance).addUser(userName,userPassword,isAdmin);
-				return true;
-			}
-			else if(S.equals("Receive File")){
-				System.out.println("Enter File name");
-				String fileName = s.nextLine();
-				instance.getFile(fileName);
-				return true;
-			}
-			else if(S.equals("Get File List")){
-				instance.getFileList();
-				return true;
-			}
-			return false;
+		if(S.equals("Clear Notification")){
+			instance.clearNotif();
+			return true;
 		}
+		else if(S.equals("Convert File")){
+			System.out.println("File name");
+			String fileName = s.nextLine();
+			System.out.println("topic name");
+			String topic = s.nextLine();
+			System.out.println("format");
+			String format = s.nextLine();
+			instance.convertFile(fileName,topic,format);
+			return true;
+		}
+		else if(S.equals("Send File")){
+			System.out.println("Enter File name");
+			String fileName = s.nextLine();
+			System.out.println("Entire File topic");
+			String fileTopic = s.nextLine();
+			instance.sendFile(fileName,fileTopic);
+			return true;
+		}
+		else if(S.equals("Delete File")){
+			System.out.println("Enter File name");
+			String fileName = s.nextLine();
+			System.out.println("Entire File topic");
+			String fileTopic = s.nextLine();
+			((Administrator)instance).deleteFile(fileName,fileTopic);
+			return true;
+		}
+		else if(S.equals("Add User")){
+			System.out.println("Enter User name");
+			String userName = s.nextLine();
+			System.out.println("Enter User password");
+			String userPassword = s.nextLine();
+			System.out.println("Is this person an admin");
+			String isAdmin = s.nextLine();
+			((Administrator)instance).addUser(userName,userPassword,isAdmin);
+			return true;
+		}
+		else if(S.equals("Receive File")){
+			System.out.println("Enter File name");
+			String fileName = s.nextLine();
+			instance.getFile(fileName);
+			return true;
+		}
+		else if(S.equals("Get File List")){
+			instance.getFileList();
+			return true;
+		}
+		return false;
+	}
 
 	public static boolean loginHandler(){
 		System.out.println("attempt login");
@@ -71,16 +88,22 @@ public class UI{
 		boolean toreturn = false;
 		try{
 			String loginsuccess = instance.login(userName,password);
-			if(loginsuccess.equals("Student")){
-				System.out.println("logged in as student");
-				instance = new Student(instance.getSocket(),userName);
-				toreturn = true;
-			}
-			else if(loginsuccess.equals("Admin")){
-				Admin = true;
-				System.out.println("logged in as Admin");
-				instance = new Administrator(instance.getSocket(),userName);
-				toreturn = true;
+			if(loginsuccess.length() > 0){
+				String stuAd = loginsuccess.substring(0,loginsuccess.indexOf(" "));
+				String notification = loginsuccess.substring(loginsuccess.indexOf(" "),loginsuccess.length());
+				if(stuAd.equals("Student")){
+					System.out.println("logged in as student");
+					System.out.println("Your current notifications are \n" +  notification);
+					instance = new Student(instance.getSocket(),userName);
+					toreturn = true;
+				}
+				else if(stuAd.equals("Admin")){
+					Admin = true;
+					System.out.println("logged in as Admin");
+					System.out.println("Your current notifications are \n" +  notification);
+					instance = new Administrator(instance.getSocket(),userName);
+					toreturn = true;
+				}
 			}
 			else{
 				System.out.println("log in failed. server will now close socket");

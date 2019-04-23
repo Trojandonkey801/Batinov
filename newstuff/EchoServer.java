@@ -1,4 +1,5 @@
 import java.io.*; import java.math.BigInteger;
+import java.awt.image.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
@@ -6,8 +7,10 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.*;
+import javax.imageio.ImageIO;
 
 public class EchoServer implements Runnable{
+
 	Socket indivSocket;
 	final static String dir = "./ServerFileDir/";
 	static int port = 21839;
@@ -34,6 +37,24 @@ public class EchoServer implements Runnable{
 			Admins.add(new Credential(true, userName,ss.next()));
 		}
 		s.close();
+	}
+	public static void deleteLine(String f, String fileName, String topic) throws FileNotFoundException,IOException{
+		String temp = "";
+		Scanner s = new Scanner(new File(f));
+		while(s.hasNextLine()){
+			String line = s.nextLine();
+			if(!(line.equals( fileName + " | " + topic))){
+				temp += line;
+				temp += "\n";
+			}
+		}
+		File ff = new File(f);
+		ff.delete();
+		File fff = new File(f);
+		fff.createNewFile();
+		PrintWriter pw = new PrintWriter(fff);
+		pw.println(temp);
+		pw.close();
 	}
 	/**
 	 * Read in User list to arraylist
@@ -105,12 +126,9 @@ public class EchoServer implements Runnable{
 	private void deleteFile(String topic,String fileName)throws FileNotFoundException,IOException{
 		System.out.println("inside dlete");
 		File directory = new File(dir + topic + "/" + fileName);
-		System.out.println("del " + dir + topic + "/" + fileName + " aaaa");
 		directory.delete();
 		File fileList = new File(dir+"UserFiles.txt");
-		fileList.delete();
-		fileList.createNewFile();
-		readFiles();
+		deleteLine(dir+"UserFiles.txt",fileName,topic);
 	}
 	/*
 	 *Send list of file names.
@@ -202,6 +220,57 @@ public class EchoServer implements Runnable{
 		}
 	}
 
+	public void clearNotification(String userName) throws FileNotFoundException,IOException{
+		String temp = "";
+		String f = dir + "/Notifications.txt";
+		Scanner s = new Scanner(new File(f));
+		while(s.hasNextLine()){
+			String line = s.nextLine();
+			if(!line.substring(0,line.indexOf(" ")).equals(userName)){
+				temp += line;
+				temp += "\n";
+			}
+		}
+		File ff = new File(f);
+		ff.delete();
+		File fff = new File(f);
+		fff.createNewFile();
+		PrintWriter pw = new PrintWriter(fff);
+		pw.println(temp);
+		pw.close();
+	}
+	public String getNotification(String userName) throws FileNotFoundException{
+		File f = new File(dir+"/Notifications.txt");
+		Scanner S = new Scanner(f);
+		String toreturn = "";
+		while(S.hasNextLine()){
+			String lineRead = S.nextLine();
+			Scanner lineScanner = new Scanner(lineRead);
+			while(lineScanner.hasNext()){
+				String name = lineScanner.next();
+				if(userName.equals(name)){
+					while(lineScanner.hasNext())
+						toreturn += lineScanner.next();
+					toreturn += "\n";
+				}
+			}
+		}
+		if(toreturn.equals(""))
+			return "There are no notifications";
+		return toreturn;
+	}
+	public void convertFile(String filename,String topic,String format)throws IOException{
+		String inputFileName = dir + "/" + topic + "/" + filename;
+		System.out.println(inputFileName);
+		String outputFileName = dir + "/" + topic + "/" + filename.substring(0,filename.indexOf('.')) + "." + format;
+		System.out.println(outputFileName);
+		FileInputStream fis = new FileInputStream(inputFileName);
+		FileOutputStream fos = new FileOutputStream(outputFileName);
+		BufferedImage inputImage = ImageIO.read(fis);
+		ImageIO.write(inputImage,format,fos);
+		fis.close();
+		fos.close();
+	}
 	public void run(){
 		boolean logged = false;
 		String loggedName = "";
@@ -230,7 +299,7 @@ public class EchoServer implements Runnable{
 						if(Creds.get(userInd).equals(new Credential(false,name,s.next()))){
 							System.out.println("Log in successful");
 							Thread.sleep(100);
-							out.println("Student");
+							out.println("Student " + getNotification(name));
 							logged = true;
 						}
 					}
@@ -238,7 +307,7 @@ public class EchoServer implements Runnable{
 						if(Admins.get(adminInd).equals(new Credential(true,name,s.next()))){
 							System.out.println("Log in successful");
 							Thread.sleep(100);
-							out.println("Admin");
+							out.println("Admin " + getNotification(name));
 							logged = true;
 						}
 					}
@@ -263,10 +332,16 @@ public class EchoServer implements Runnable{
 				if(first.equals("getFileList")){
 					sendFileList(out,in);
 				}
+				if(first.equals("convertFile")){
+					convertFile(s.next(),s.next(),s.next());
+				}
 				if(first.equals("delete")){
 					String fileName = s.next();
 					String topic = s.next();
 					deleteFile(topic,fileName);
+				}
+				if(first.equals("clearNotification")){
+					clearNotification(s.next());
 				}
 				if(first.equals("AddUser")){
 					String name = s.next();
