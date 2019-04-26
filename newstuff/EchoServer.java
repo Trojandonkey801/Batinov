@@ -38,9 +38,6 @@ public class EchoServer implements Runnable{
 		}
 		s.close();
 	}
-	/**
-	 * Server side method to handle deleting a single line , given topic.
-	 */
 	public static void deleteLine(String f, String fileName, String topic) throws FileNotFoundException,IOException{
 		String temp = "";
 		Scanner s = new Scanner(new File(f));
@@ -178,10 +175,93 @@ public class EchoServer implements Runnable{
 		out.println(toSend);
 		out.println("exit FileList");
 	}
-
-	/**
-	 * Server side caller function to send a File to user.
-	 */
+	
+	private void sendQuestionList(PrintWriter out,BufferedReader in)throws IOException{
+		ArrayList<String> questions = new ArrayList<String>();
+		File F = new File(dir+"Forum.txt");
+		Scanner S = new Scanner(F);
+		String toSend = "";
+		int count = 1;
+		while(S.hasNext()){
+			String s = S.next();
+			while (!s.equals("Question:") && S.hasNext())
+				s = S.next();
+			if (!S.hasNext())
+				break;
+			String question = Integer.toString(count) + " : " + S.nextLine();
+			
+			if(!questions.contains(question)){
+				questions.add(question);
+			}
+		count ++;
+		}	
+		if (questions.isEmpty()){
+			toSend += "There is no questions yet, please post one";
+			toSend += "\n";
+		}
+		
+		for (int i = 0; i < questions.size(); i++) {
+			toSend += questions.get(i);
+			toSend += "\n";
+		}
+		System.out.println(toSend);
+		out.println(toSend);
+		out.println("\n");
+		out.println("exit questionList");
+	}
+	
+	private void sendAnswerList(PrintWriter out,BufferedReader in, int num)throws IOException{
+		ArrayList<String> answers = new ArrayList<String>();
+		File F = new File(dir+"Forum.txt");
+		Scanner S = new Scanner(F);
+		Scanner S2 = new Scanner(F);
+		String toSend = "";
+		int count = 1;
+		int anscount = 1;
+			
+		while(S.hasNext()){
+			
+			while (!S.next().equals("Question:")){
+				
+			}
+			if (count == num){
+				String question = Integer.toString(count) + " : " + S.nextLine();
+			
+				if(!answers.contains(question)){
+					answers.add(question);
+				}
+				break;
+			}
+			count ++;
+		}
+		while (S2.hasNext()){
+			String ans = S2.next();
+			while(!ans.equals("Answer"+Integer.toString(num)+":") && S2.hasNext()){			
+				ans = S2.next();
+			}
+			if (!S2.hasNext())
+				break;
+			answers.add("	" + Integer.toString(anscount) + " : " + S2.nextLine());
+			anscount ++;
+		}
+		
+		
+		
+		for (int i = 0; i < answers.size(); i++) {
+			toSend += answers.get(i);
+			toSend += "\n";
+		}
+		if(answers.size() == 1){
+			toSend += "		No answers yet";
+			toSend += "\n";
+		}
+			
+		System.out.println(toSend);
+		out.println(toSend);
+		out.println("\n");
+		out.println("exit answerList");
+	}
+	
 	private void saveFile(Socket clientSock, int filesize,String fileName,String topic) throws IOException,InterruptedException {
 		DataInputStream dis = new DataInputStream(clientSock.getInputStream());
 		File dirPath = new File(dir+topic);
@@ -210,9 +290,6 @@ public class EchoServer implements Runnable{
 		Thread.sleep(100);
 	}
 
-	/**
-	 * Server side caller function to send a File to user.
-	 */
 	public void sendFile(String file) throws IOException {
 		PrintWriter p = new PrintWriter(indivSocket.getOutputStream());
 		long filesize = (new File(dir + file)).length();
@@ -249,9 +326,6 @@ public class EchoServer implements Runnable{
 		pw.println(temp);
 		pw.close();
 	}
-	/**
-	 * Server side function to get list of notifications for the end user.
-	 */
 	public String getNotification(String userName) throws FileNotFoundException{
 		File f = new File(dir+"/Notifications.txt");
 		Scanner S = new Scanner(f);
@@ -272,10 +346,6 @@ public class EchoServer implements Runnable{
 			return "There are no notifications";
 		return toreturn;
 	}
-	/**
-	 * Server side function to convert File to desred format.
-	 * The user provides the filetype to convert into.
-	 */
 	public void convertFile(String filename,String topic,String format)throws IOException{
 		String inputFileName = dir + "/" + topic + "/" + filename;
 		System.out.println(inputFileName);
@@ -288,10 +358,6 @@ public class EchoServer implements Runnable{
 		fis.close();
 		fos.close();
 	}
-	/**
-	 * Function to define operation of a single thread.
-	 * The function repeatedly receives input fromt he under user and computes the required components.
-	 */
 	public void run(){
 		boolean logged = false;
 		String loggedName = "";
@@ -353,6 +419,13 @@ public class EchoServer implements Runnable{
 				if(first.equals("getFileList")){
 					sendFileList(out,in);
 				}
+				if(first.equals("questionList")){
+					sendQuestionList(out,in);
+				}
+				if (first.equals("answerList")){
+					int num = s.nextInt();
+					sendAnswerList(out, in, num);
+				}
 				if(first.equals("convertFile")){
 					convertFile(s.next(),s.next(),s.next());
 				}
@@ -386,6 +459,24 @@ public class EchoServer implements Runnable{
 						f.write("\n");
 						f.close();
 					}
+				}
+				if (first.equals("Question")){
+					String q = s.nextLine();
+					FileWriter f = new FileWriter(new File(dir + "Forum.txt"), true);
+					f.write("Question: ");
+					f.write(q);
+					f.write("\n");
+					f.close();
+				}
+				if (first.equals("Answer")){
+					int num = s.nextInt();
+					String a = s.nextLine();
+					FileWriter fw = new FileWriter(new File(dir + "Forum.txt"), true);
+					fw.write("Answer");
+					fw.write(Integer.toString(num) + ": ");
+					fw.write(a);
+					fw.write("\n");
+					fw.close();
 				}
 				inputLine = in.readLine();
 				System.out.println("inputLin" + inputLine);

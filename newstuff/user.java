@@ -31,10 +31,6 @@ public class user{
 		return value;
 	}
 
-	/**
-	 * attempts to send a file to the server.
-	 * It must specify the filesize and type in a header prior to sending.
-	 */
 	public void sendFile(String file,String topic) throws IOException {
 		long filesize = (new File(dir + file)).length();
 		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
@@ -83,18 +79,11 @@ public class user{
 	public Socket getSocket(){
 		return socket;
 	}
-	/**
-	 * Queries the server to clear notificaitons
-	 *
-	 */
 	public void clearNotif() throws IOException{
 		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
 		p.println("clearNotification " + userName);
 		p.close();
 	}
-	/**
-	 * handles longin, by sending in login information.
-	 */
 	public String login(String User, String Password)throws IOException{
 		System.out.println("read  " + User + " "+ Password);
 		BufferedReader in = new BufferedReader(
@@ -106,10 +95,6 @@ public class user{
 		return confirm;
 	}
 
-	/**
-	 * Asks the server to convert the file
-	 *
-	 */
 	public void convertFile(String fileName,String topic, String format)throws IOException{
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(socket.getInputStream()));
@@ -118,10 +103,6 @@ public class user{
 		in.close();
 	}
 
-	/**
-	 * gets List of files from the server
-	 *
-	 */
 	public void getFileList()throws IOException{
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(socket.getInputStream()));
@@ -135,10 +116,48 @@ public class user{
 		}
 		while(!confirm.equals("exit FileList"));
 	}
+	
+	public void addQuestion(String question)throws IOException{
+		PrintWriter p = new PrintWriter(socket.getOutputStream());
+		p.println("Question " + question);
+		p.flush();
+	}
+	
+	public void addAnswer(String answer, int num)throws IOException{
+		PrintWriter p = new PrintWriter(socket.getOutputStream());
+		p.println("Answer " + Integer.toString(num) + " " + answer);
+		p.flush();
+	}
+	
+	public void listQuestions()throws IOException{
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(socket.getInputStream()));
+		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
+		p.println("questionList ");
+		String confirm = "";
+			
+		while(!confirm.equals("exit questionList")){
+			confirm = in.readLine();
+			System.out.println(confirm);
+		}
 
-	/**
-	 * initates connection with server
-	 */
+		
+	}
+	
+	public void listAnswers(int num)throws IOException{
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(socket.getInputStream()));
+		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
+		p.println("answerList " + Integer.toString(num));
+		String confirm = "";
+		do{
+			confirm = in.readLine();
+			System.out.println(confirm);
+		}
+		while(!confirm.equals("exit answerList"));
+		
+	}
+
 	public void initCon(int port, String host){
 		try{
 			socket = new Socket(InetAddress.getByName(host),port);

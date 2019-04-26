@@ -9,9 +9,9 @@ public class UI{
 			String S;
 			while(true){
 				if(Admin)
-					System.out.println("Convert File | Clear Notification | Send File | Receive File | Add User | Get File List | Delete File | Exit");
+					System.out.println("Convert File | Clear Notification | Send File | Access Forum | Receive File | Add User | Get File List | Delete File | Exit");
 				else
-					System.out.println("Convert File | Clear Notification | Send File | Receive File | Get File List | Exit");
+					System.out.println("Convert File | Clear Notification | Access Forum | Send File | Receive File | Get File List | Exit");
 				S = s.nextLine();
 				if(S.equals("Exit"))
 					break;
@@ -20,9 +20,6 @@ public class UI{
 		}
 		s.close();
 	}
-	/**
-	 * Action handler that parses the input function, and then calls the appropriate function depending on which function was called
-	 */
 	public static boolean actionHandler(String S)throws IOException,InterruptedException{
 		if(instance.getSocket() == null){
 			System.out.println(" in action sockets null");
@@ -77,15 +74,47 @@ public class UI{
 			instance.getFileList();
 			return true;
 		}
+		else if (S.equals("Access Forum")){
+			System.out.println("Enter action : Ask Question | List Questions");
+			String action = s.nextLine();
+			if (action.equals("Ask Question")){
+				System.out.println("Enter question to post \n");
+				String question = s.nextLine();
+				instance.addQuestion(question);
+				return true;
+			}
+			else if (action.equals("List Questions")){
+				instance.listQuestions();
+				System.out.println("Enter action : Answer | Get Answers | Return \n");
+				String answer = s.nextLine();
+				if (!answer.equals("Answer") && !answer.equals("Get Answers")){
+					System.out.println("Returning to main menu \n");
+					return true;
+				}
+				System.out.println("To which question? (Enter a number) \n");
+				int num = 0;
+				if (s.hasNextInt()){
+					num = s.nextInt();
+					s.nextLine();
+				}
+				else
+					System.out.println("Wrong query, returning to main menu\n");
+				if (answer.equals("Answer")){
+					System.out.println("What is your answer? \n");
+					String answ = s.nextLine();
+					instance.addAnswer(answ, num);
+					return true;
+				}
+				else if (answer.equals("Get Answers")){
+					instance.listAnswers(num);
+					return true;
+				}
+				
+			}
+		}
 		return false;
 	}
 
-	/**
-	 * login handler.
-	 * When a user successfulyl logs in, the server is queried for the username/password.
-	 * Depending on whether it is a student or admin, the instance object is downcasted.
-	 * The server object has to be passed along, as downcasting creates a new object.
-	 */
 	public static boolean loginHandler(){
 		System.out.println("attempt login");
 		System.out.println("User userName");
