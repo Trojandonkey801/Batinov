@@ -38,6 +38,9 @@ public class EchoServer implements Runnable{
 		}
 		s.close();
 	}
+	/**
+	 * Server side method to handle deleting a single line , given topic.
+	 */
 	public static void deleteLine(String f, String fileName, String topic) throws FileNotFoundException,IOException{
 		String temp = "";
 		Scanner s = new Scanner(new File(f));
@@ -175,6 +178,10 @@ public class EchoServer implements Runnable{
 		out.println(toSend);
 		out.println("exit FileList");
 	}
+
+	/**
+	 * Server side caller function to send a File to user.
+	 */
 	private void saveFile(Socket clientSock, int filesize,String fileName,String topic) throws IOException,InterruptedException {
 		DataInputStream dis = new DataInputStream(clientSock.getInputStream());
 		File dirPath = new File(dir+topic);
@@ -203,6 +210,9 @@ public class EchoServer implements Runnable{
 		Thread.sleep(100);
 	}
 
+	/**
+	 * Server side caller function to send a File to user.
+	 */
 	public void sendFile(String file) throws IOException {
 		PrintWriter p = new PrintWriter(indivSocket.getOutputStream());
 		long filesize = (new File(dir + file)).length();
@@ -239,6 +249,9 @@ public class EchoServer implements Runnable{
 		pw.println(temp);
 		pw.close();
 	}
+	/**
+	 * Server side function to get list of notifications for the end user.
+	 */
 	public String getNotification(String userName) throws FileNotFoundException{
 		File f = new File(dir+"/Notifications.txt");
 		Scanner S = new Scanner(f);
@@ -259,6 +272,10 @@ public class EchoServer implements Runnable{
 			return "There are no notifications";
 		return toreturn;
 	}
+	/**
+	 * Server side function to convert File to desred format.
+	 * The user provides the filetype to convert into.
+	 */
 	public void convertFile(String filename,String topic,String format)throws IOException{
 		String inputFileName = dir + "/" + topic + "/" + filename;
 		System.out.println(inputFileName);
@@ -271,6 +288,10 @@ public class EchoServer implements Runnable{
 		fis.close();
 		fos.close();
 	}
+	/**
+	 * Function to define operation of a single thread.
+	 * The function repeatedly receives input fromt he under user and computes the required components.
+	 */
 	public void run(){
 		boolean logged = false;
 		String loggedName = "";
