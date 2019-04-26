@@ -20,6 +20,9 @@ public class UI{
 		}
 		s.close();
 	}
+	/**
+	 * Action handler that parses the input function, and then calls the appropriate function depending on which function was called
+	 */
 	public static boolean actionHandler(String S)throws IOException,InterruptedException{
 		if(instance.getSocket() == null){
 			System.out.println(" in action sockets null");
@@ -77,6 +80,12 @@ public class UI{
 		return false;
 	}
 
+	/**
+	 * login handler.
+	 * When a user successfulyl logs in, the server is queried for the username/password.
+	 * Depending on whether it is a student or admin, the instance object is downcasted.
+	 * The server object has to be passed along, as downcasting creates a new object.
+	 */
 	public static boolean loginHandler(){
 		System.out.println("attempt login");
 		System.out.println("User userName");
