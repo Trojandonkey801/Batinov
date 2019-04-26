@@ -116,24 +116,39 @@ public class user{
 		}
 		while(!confirm.equals("exit FileList"));
 	}
-	
+	/**
+	 * 
+	 * @param question
+	 * @throws IOException
+	 * 
+	 * Sends a question to the server 
+	 */
 	public void addQuestion(String question)throws IOException{
 		PrintWriter p = new PrintWriter(socket.getOutputStream());
-		p.println("Question " + question);
+		p.println("Question " + question);// sends to the server the request to add question to the forum
 		p.flush();
 	}
-	
+	/**
+	 * Sends an answer and a question number to the server
+	 * @param answer
+	 * @param num
+	 * @throws IOException
+	 */
 	public void addAnswer(String answer, int num)throws IOException{
 		PrintWriter p = new PrintWriter(socket.getOutputStream());
-		p.println("Answer " + Integer.toString(num) + " " + answer);
+		p.println("Answer " + Integer.toString(num) + " " + answer); //sends the the answer and the question number to the server
 		p.flush();
 	}
 	
+	/**
+	 * Sends a request to see the question list
+	 * @throws IOException
+	 */
 	public void listQuestions()throws IOException{
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(socket.getInputStream()));
 		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
-		p.println("questionList ");
+		p.println("questionList "); //sends the request to show the question list to the server
 		String confirm = "";
 			
 		while(!confirm.equals("exit questionList")){
@@ -143,12 +158,16 @@ public class user{
 
 		
 	}
-	
+	/**
+	 * Sends a request to see the answer list to a specific question number
+	 * @param num
+	 * @throws IOException
+	 */
 	public void listAnswers(int num)throws IOException{
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(socket.getInputStream()));
 		PrintWriter p = new PrintWriter(socket.getOutputStream(),true);
-		p.println("answerList " + Integer.toString(num));
+		p.println("answerList " + Integer.toString(num)); //sends to the server the request to show the answer list to the question num
 		String confirm = "";
 		do{
 			confirm = in.readLine();

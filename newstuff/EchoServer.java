@@ -175,7 +175,14 @@ public class EchoServer implements Runnable{
 		out.println(toSend);
 		out.println("exit FileList");
 	}
-	
+	/**
+	 * 
+	 * @param out
+	 * @param in
+	 * @throws IOException
+	 * 
+	 * Goes through the Forum file and gets all the questions and sends it to the user
+	 */
 	private void sendQuestionList(PrintWriter out,BufferedReader in)throws IOException{
 		ArrayList<String> questions = new ArrayList<String>();
 		File F = new File(dir+"Forum.txt");
@@ -209,24 +216,29 @@ public class EchoServer implements Runnable{
 		out.println("\n");
 		out.println("exit questionList");
 	}
-	
+	/**
+	 * 
+	 * @param out
+	 * @param in
+	 * @param num question number
+	 * @throws IOException
+	 * 
+	 * goes through the forum file, gets the question and the associated answers and sends ti to the user
+	 */
 	private void sendAnswerList(PrintWriter out,BufferedReader in, int num)throws IOException{
 		ArrayList<String> answers = new ArrayList<String>();
-		File F = new File(dir+"Forum.txt");
-		Scanner S = new Scanner(F);
-		Scanner S2 = new Scanner(F);
+		File F = new File(dir+"Forum.txt");//opens the file needed for the forum
+		Scanner S = new Scanner(F); //scans the file and gets the question
+		Scanner S2 = new Scanner(F);//scans the file and gets the answers to said question
 		String toSend = "";
-		int count = 1;
-		int anscount = 1;
+		int count = 1;//counts the questions
+		int anscount = 1;//enumerates the answers
 			
-		while(S.hasNext()){
-			
+		while(S.hasNext()){			
 			while (!S.next().equals("Question:")){
-				
 			}
-			if (count == num){
+			if (count == num){ //if the count is equal to the question number, get the question
 				String question = Integer.toString(count) + " : " + S.nextLine();
-			
 				if(!answers.contains(question)){
 					answers.add(question);
 				}
@@ -236,7 +248,7 @@ public class EchoServer implements Runnable{
 		}
 		while (S2.hasNext()){
 			String ans = S2.next();
-			while(!ans.equals("Answer"+Integer.toString(num)+":") && S2.hasNext()){			
+			while(!ans.equals("Answer"+Integer.toString(num)+":") && S2.hasNext()){	//keep looking unil finding the anwers for the said question		
 				ans = S2.next();
 			}
 			if (!S2.hasNext())
@@ -251,7 +263,7 @@ public class EchoServer implements Runnable{
 			toSend += answers.get(i);
 			toSend += "\n";
 		}
-		if(answers.size() == 1){
+		if(answers.size() == 1){ //if the list only contains the question
 			toSend += "		No answers yet";
 			toSend += "\n";
 		}
@@ -419,10 +431,10 @@ public class EchoServer implements Runnable{
 				if(first.equals("getFileList")){
 					sendFileList(out,in);
 				}
-				if(first.equals("questionList")){
+				if(first.equals("questionList")){ //if the request for question list is sent
 					sendQuestionList(out,in);
 				}
-				if (first.equals("answerList")){
+				if (first.equals("answerList")){// if the request for answer list is sent
 					int num = s.nextInt();
 					sendAnswerList(out, in, num);
 				}
@@ -460,21 +472,21 @@ public class EchoServer implements Runnable{
 						f.close();
 					}
 				}
-				if (first.equals("Question")){
-					String q = s.nextLine();
-					FileWriter f = new FileWriter(new File(dir + "Forum.txt"), true);
-					f.write("Question: ");
-					f.write(q);
+				if (first.equals("Question")){ //if the request to add question is sent
+					String q = s.nextLine(); // gets the question from the request
+					FileWriter f = new FileWriter(new File(dir + "Forum.txt"), true);// opens the forum file to write in it
+					f.write("Question: ");// write Question: in front to id the question
+					f.write(q);//writes the question
 					f.write("\n");
 					f.close();
 				}
-				if (first.equals("Answer")){
-					int num = s.nextInt();
-					String a = s.nextLine();
+				if (first.equals("Answer")){//if the request to add answer to a question is sent
+					int num = s.nextInt();//get the number of the question
+					String a = s.nextLine();//get the answer
 					FileWriter fw = new FileWriter(new File(dir + "Forum.txt"), true);
 					fw.write("Answer");
-					fw.write(Integer.toString(num) + ": ");
-					fw.write(a);
+					fw.write(Integer.toString(num) + ": ");//write Answer#: to id the answer and the # of the question
+					fw.write(a);//writes the answer
 					fw.write("\n");
 					fw.close();
 				}
