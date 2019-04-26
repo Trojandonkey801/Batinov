@@ -1,0 +1,3 @@
+received_elephant.jpg | elephant
+received_dog.jpg | cat
+
